@@ -13,4 +13,5 @@ RUN sed -i -e 's!\bmain\b!main contrib!g' /etc/apt/sources.list && \
 
 RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> \
     /etc/apt/sources.list.d/backports.list \
-    && clean-install -t stretch-backports glusterfs-client glusterfs-common
+    && clean-install -t glusterfs-servers stretch-backports glusterfs-client glusterfs-common  \
+    && apt-get install -y glusterfs-servers glusterfs-client
