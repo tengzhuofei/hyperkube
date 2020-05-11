@@ -11,7 +11,14 @@ RUN sed -i -e 's!\bmain\b!main contrib!g' /etc/apt/sources.list && \
     open-iscsi \
     azure-cli
 
+ENV DEBID=$(grep 'VERSION_ID=' /etc/os-release | cut -d '=' -f 2 | tr -d '"')
+ENV DEBVER=$(grep 'VERSION=' /etc/os-release | grep -Eo '[a-z]+')
+ENV DEBARCH=$(dpkg --print-architecture)
+
 RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> \
     /etc/apt/sources.list.d/backports.list \
-    && clean-install -t glusterfs-server stretch-backports glusterfs-client glusterfs-common  \
-    && apt-get update && apt-get install -y glusterfs-server glusterfs-client
+    && clean-install -t stretch-backports glusterfs-client glusterfs-common  \
+    && apt-get update && apt-get install -y wget && wget -O - https://download.gluster.org/pub/gluster/glusterfs/LATEST/rsa.pub | apt-key add - \
+    && wget -O - https://download.gluster.org/pub/gluster/glusterfs/7/rsa.pub | apt-key add - \
+    && echo deb https://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/${DEBID}/${DEBARCH}/apt ${DEBVER} main > /etc/apt/sources.list.d/gluster.list \
+    && apt-get install glusterfs-client
