@@ -20,6 +20,6 @@ RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> \
     && export DEBVER=$(grep 'VERSION=' /etc/os-release | grep -Eo '[a-z]+') \
     && export DEBARCH=$(dpkg --print-architecture) 
 
-RUN apt-get update -y && apt-get install -y wget && wget -O - https://download.gluster.org/pub/gluster/glusterfs/LATEST/rsa.pub | apt-key add - \
+RUN apt-get update -y && apt-get install -y wget \
     && wget -O - https://download.gluster.org/pub/gluster/glusterfs/7/rsa.pub | apt-key add - 
 RUN echo deb https://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/${DEBID}/${DEBARCH}/apt ${DEBVER} main > /etc/apt/sources.list.d/\ gluster.list && apt-get install -y glusterfs-client
