@@ -16,10 +16,10 @@ RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> \
     /etc/apt/sources.list.d/backports.list \
     && clean-install -t stretch-backports glusterfs-client glusterfs-common  \
 
-RUN apt-get update -y && apt-get install -y wget \
+RUN apt-get install -y wget \
     && wget -O - https://download.gluster.org/pub/gluster/glusterfs/7/rsa.pub | apt-key add - 
 
 RUN echo deb [arch=amd64] https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/stretch/amd64/apt stretch main > \
     /etc/apt/sources.list.d/gluster.list
 
-&& apt-get install -y glusterfs-client
+RUN apt-get update -y && apt-get install -y glusterfs-client
